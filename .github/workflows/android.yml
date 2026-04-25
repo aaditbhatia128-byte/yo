@@ -17,10 +17,20 @@ jobs:
           node-version: 18
           
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install -g npm@latest
+          rm -f package-lock.json
+          npm install --include=dev
+        
+      - name: Generate Android Assets
+        run: |
+          npx @capacitor/assets generate --android --assetPath assets --icon icon.svg --splash splash.svg
+        continue-on-error: true
         
       - name: Build web project
         run: npm run build
+        env:
+          NODE_ENV: production
         
       - name: Sync Capacitor
         run: npx cap sync android
