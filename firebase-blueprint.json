@@ -1,0 +1,86 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Information about a CosmosChat user.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The unique Firebase Auth UID." },
+        "displayName": { "type": "string", "description": "The user's display name." },
+        "photoURL": { "type": "string", "description": "The user's profile image URL." },
+        "status": { "type": "string", "description": "User online status or custom status message." },
+        "lastSeen": { "type": "string", "format": "date-time", "description": "Timestamp of last activity." },
+        "publicKey": { "type": "string", "description": "The user's public encryption key for E2EE." }
+      },
+      "required": ["uid", "displayName"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "A chat room between multiple users.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "participants": { "type": "array", "items": { "type": "string" }, "description": "List of user UIDs." },
+        "lastMessage": { "type": "string", "description": "Encrypted last message snippet." },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "type": { "type": "string", "enum": ["direct", "group"] },
+        "isAI": { "type": "boolean", "description": "Whether this is a chat with Meteorix AI" },
+        "groupName": { "type": "string" },
+        "groupDescription": { "type": "string" },
+        "groupRules": { "type": "string", "description": "Administrative protocols/rules for the cluster." },
+        "groupAvatar": { "type": "string" },
+        "adminId": { "type": "string" },
+        "inviteCode": { "type": "string", "description": "Secret code for joining the cluster." }
+      },
+      "required": ["participants", "updatedAt", "type"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "A single chat message.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "conversationId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "contentEncrypted": { "type": "string", "description": "AES-GCM encrypted content." },
+        "iv": { "type": "string", "description": "Initialization vector for decryption." },
+        "encKeys": { "type": "object", "description": "Group encryption keys map." },
+        "type": { "type": "string", "enum": ["text", "file", "image", "video_call", "poll"] },
+        "disappearsAt": { "type": "string", "format": "date-time", "description": "Optional TTL for disappearing messages." },
+        "attachmentUrl": { "type": "string", "description": "URL for image generation or file uploads." },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["conversationId", "senderId", "createdAt"]
+    },
+    "JoinRequest": {
+      "title": "JoinRequest",
+      "description": "Request to join a neural cluster.",
+      "type": "object",
+      "properties": {
+        "conversationId": { "type": "string" },
+        "userId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["conversationId", "userId", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "User profile data."
+    },
+    "/conversations/{convId}": {
+      "schema": "Conversation",
+      "description": "Conversation metadata."
+    },
+    "/conversations/{convId}/messages/{msgId}": {
+      "schema": "Message",
+      "description": "Messages within a conversation."
+    },
+    "/join_requests/{requestId}": {
+      "schema": "JoinRequest",
+      "description": "Join requests for groups."
+    }
+  }
+}

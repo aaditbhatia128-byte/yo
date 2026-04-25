@@ -1,0 +1,9 @@
+{
+  "name": "Meteorix",
+  "description": "Ultra HD galactic-themed messaging network with AI-driven intelligence, end-to-end encryption, and high-fidelity rendering.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": []
+}

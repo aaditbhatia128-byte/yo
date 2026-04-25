@@ -1,0 +1,6 @@
+{
+  "appId": "com.meteorix.neuralmatrix",
+  "appName": "Meteorix",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}

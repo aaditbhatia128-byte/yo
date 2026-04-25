@@ -1,0 +1,16 @@
+{
+  "name": "Meteorix Neural Matrix",
+  "short_name": "Meteorix",
+  "description": "Premium encrypted neural messaging matrix.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0c",
+  "theme_color": "#58a6ff",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
